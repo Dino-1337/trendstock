@@ -1,0 +1,22 @@
+certifi==2026.7.22
+charset-normalizer==3.4.9
+fastapi==0.141.1
+httpx==0.28.1
+idna==3.18
+lxml==6.1.1
+numpy==2.5.1
+pandas==3.0.5
+# Was only ever present transitively via fastapi; now imported directly for
+# LLM output validation and the pipeline's stage contracts, so it is pinned.
+pydantic==2.13.4
+python-dateutil==2.9.0.post0
+pytest==9.1.1
+python-dotenv==1.2.2
+python-multipart==0.0.32
+requests==2.34.2
+six==1.17.0
+starlette==1.4.0
+trendspyg==1.1.1
+tzdata==2026.3
+urllib3==1.26.20
+uvicorn==0.52.1

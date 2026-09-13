@@ -1,0 +1,106 @@
+@import "tailwindcss";
+
+/* Inter, self-hosted via @fontsource — no CDN, no remote fetch */
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/inter/700.css";
+@import "@fontsource/inter/800.css";
+
+/* ---------------------------------------------------------------- */
+/* Design tokens — from docs/ui-reference.md                        */
+/* ---------------------------------------------------------------- */
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  /* surfaces */
+  --color-cream: #f6f2ec;
+  --color-card: #ffffff;
+  --color-hairline: #ece5da;
+
+  /* text */
+  --color-ink: #1a1a1a;
+  --color-muted: #8a8a8a;
+  --color-muted-2: #b7b2a9;
+
+  /* pastels — chip / pill backgrounds */
+  --color-pastel-pink: #f9c6d9;
+  --color-pastel-purple: #ded3f7;
+  --color-pastel-yellow: #fae49b;
+  --color-pastel-blue: #d2e0f8;
+
+  /* darker "ink" tones used as text/icon color on top of pastels */
+  --color-pastel-pink-ink: #9c2e52;
+  --color-pastel-purple-ink: #5b3fa3;
+  --color-pastel-yellow-ink: #8a6d1f;
+  --color-pastel-blue-ink: #35538f;
+
+  /* chart line strokes — a touch deeper than the pastel fills so they read
+     clearly against a white plot area, per ui-reference.md's chart card */
+  --color-chart-purple: #b9a4ef;
+  --color-chart-pink: #f28fb8;
+
+  /* semantic */
+  --color-positive: #12b76a;
+  --color-positive-bg: #e3f9ee;
+  --color-negative: #f04438;
+  --color-negative-bg: #fdeceb;
+  --color-cta: #111111;
+
+  /* radii */
+  --radius-card: 20px;
+  --radius-pill: 999px;
+  --radius-chip: 12px;
+
+  /* shadow */
+  --shadow-card: 0 1px 2px rgba(26, 20, 15, 0.03), 0 12px 28px -12px rgba(26, 20, 15, 0.08);
+}
+
+html,
+body {
+  margin: 0;
+  background-color: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* the page body must never scroll horizontally */
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-muted-2) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-muted-2);
+  border-radius: 999px;
+}
+
+.card-shadow {
+  box-shadow: var(--shadow-card);
+}
+
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

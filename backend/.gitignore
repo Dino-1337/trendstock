@@ -1,1 +1,9 @@
 /venv
+.env
+/data/uploads/
+/data/cache/
+/data/.trendspyg_downloads/
+# Derived/regenerable: rebuilt from the raw snapshots and the APIs.
+/data/trendstock.db
+/data/trendstock.db-wal
+/data/trendstock.db-shm

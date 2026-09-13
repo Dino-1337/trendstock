@@ -1,0 +1,1056 @@
+[
+  {
+    "schema_version": "1.0",
+    "source": "explore",
+    "keyword": "fashion trends",
+    "geo": "IN",
+    "timeframe": "today 12-m",
+    "fetched_at": "2026-08-05T06:55:27.322858+00:00",
+    "count": 53,
+    "interest_over_time": [
+      {
+        "date": "2025-08-03T00:00:00+00:00",
+        "value": 37,
+        "is_partial": false
+      },
+      {
+        "date": "2025-08-10T00:00:00+00:00",
+        "value": 32,
+        "is_partial": false
+      },
+      {
+        "date": "2025-08-17T00:00:00+00:00",
+        "value": 24,
+        "is_partial": false
+      },
+      {
+        "date": "2025-08-24T00:00:00+00:00",
+        "value": 28,
+        "is_partial": false
+      },
+      {
+        "date": "2025-08-31T00:00:00+00:00",
+        "value": 27,
+        "is_partial": false
+      },
+      {
+        "date": "2025-09-07T00:00:00+00:00",
+        "value": 27,
+        "is_partial": false
+      },
+      {
+        "date": "2025-09-14T00:00:00+00:00",
+        "value": 27,
+        "is_partial": false
+      },
+      {
+        "date": "2025-09-21T00:00:00+00:00",
+        "value": 26,
+        "is_partial": false
+      },
+      {
+        "date": "2025-09-28T00:00:00+00:00",
+        "value": 23,
+        "is_partial": false
+      },
+      {
+        "date": "2025-10-05T00:00:00+00:00",
+        "value": 28,
+        "is_partial": false
+      },
+      {
+        "date": "2025-10-12T00:00:00+00:00",
+        "value": 36,
+        "is_partial": false
+      },
+      {
+        "date": "2025-10-19T00:00:00+00:00",
+        "value": 27,
+        "is_partial": false
+      },
+      {
+        "date": "2025-10-26T00:00:00+00:00",
+        "value": 36,
+        "is_partial": false
+      },
+      {
+        "date": "2025-11-02T00:00:00+00:00",
+        "value": 51,
+        "is_partial": false
+      },
+      {
+        "date": "2025-11-09T00:00:00+00:00",
+        "value": 54,
+        "is_partial": false
+      },
+      {
+        "date": "2025-11-16T00:00:00+00:00",
+        "value": 65,
+        "is_partial": false
+      },
+      {
+        "date": "2025-11-23T00:00:00+00:00",
+        "value": 61,
+        "is_partial": false
+      },
+      {
+        "date": "2025-11-30T00:00:00+00:00",
+        "value": 83,
+        "is_partial": false
+      },
+      {
+        "date": "2025-12-07T00:00:00+00:00",
+        "value": 100,
+        "is_partial": false
+      },
+      {
+        "date": "2025-12-14T00:00:00+00:00",
+        "value": 77,
+        "is_partial": false
+      },
+      {
+        "date": "2025-12-21T00:00:00+00:00",
+        "value": 68,
+        "is_partial": false
+      },
+      {
+        "date": "2025-12-28T00:00:00+00:00",
+        "value": 70,
+        "is_partial": false
+      },
+      {
+        "date": "2026-01-04T00:00:00+00:00",
+        "value": 89,
+        "is_partial": false
+      },
+      {
+        "date": "2026-01-11T00:00:00+00:00",
+        "value": 82,
+        "is_partial": false
+      },
+      {
+        "date": "2026-01-18T00:00:00+00:00",
+        "value": 74,
+        "is_partial": false
+      },
+      {
+        "date": "2026-01-25T00:00:00+00:00",
+        "value": 75,
+        "is_partial": false
+      },
+      {
+        "date": "2026-02-01T00:00:00+00:00",
+        "value": 83,
+        "is_partial": false
+      },
+      {
+        "date": "2026-02-08T00:00:00+00:00",
+        "value": 68,
+        "is_partial": false
+      },
+      {
+        "date": "2026-02-15T00:00:00+00:00",
+        "value": 98,
+        "is_partial": false
+      },
+      {
+        "date": "2026-02-22T00:00:00+00:00",
+        "value": 92,
+        "is_partial": false
+      },
+      {
+        "date": "2026-03-01T00:00:00+00:00",
+        "value": 54,
+        "is_partial": false
+      },
+      {
+        "date": "2026-03-08T00:00:00+00:00",
+        "value": 53,
+        "is_partial": false
+      },
+      {
+        "date": "2026-03-15T00:00:00+00:00",
+        "value": 81,
+        "is_partial": false
+      },
+      {
+        "date": "2026-03-22T00:00:00+00:00",
+        "value": 51,
+        "is_partial": false
+      },
+      {
+        "date": "2026-03-29T00:00:00+00:00",
+        "value": 46,
+        "is_partial": false
+      },
+      {
+        "date": "2026-04-05T00:00:00+00:00",
+        "value": 59,
+        "is_partial": false
+      },
+      {
+        "date": "2026-04-12T00:00:00+00:00",
+        "value": 52,
+        "is_partial": false
+      },
+      {
+        "date": "2026-04-19T00:00:00+00:00",
+        "value": 48,
+        "is_partial": false
+      },
+      {
+        "date": "2026-04-26T00:00:00+00:00",
+        "value": 45,
+        "is_partial": false
+      },
+      {
+        "date": "2026-05-03T00:00:00+00:00",
+        "value": 46,
+        "is_partial": false
+      },
+      {
+        "date": "2026-05-10T00:00:00+00:00",
+        "value": 49,
+        "is_partial": false
+      },
+      {
+        "date": "2026-05-17T00:00:00+00:00",
+        "value": 42,
+        "is_partial": false
+      },
+      {
+        "date": "2026-05-24T00:00:00+00:00",
+        "value": 40,
+        "is_partial": false
+      },
+      {
+        "date": "2026-05-31T00:00:00+00:00",
+        "value": 48,
+        "is_partial": false
+      },
+      {
+        "date": "2026-06-07T00:00:00+00:00",
+        "value": 45,
+        "is_partial": false
+      },
+      {
+        "date": "2026-06-14T00:00:00+00:00",
+        "value": 37,
+        "is_partial": false
+      },
+      {
+        "date": "2026-06-21T00:00:00+00:00",
+        "value": 35,
+        "is_partial": false
+      },
+      {
+        "date": "2026-06-28T00:00:00+00:00",
+        "value": 43,
+        "is_partial": false
+      },
+      {
+        "date": "2026-07-05T00:00:00+00:00",
+        "value": 39,
+        "is_partial": false
+      },
+      {
+        "date": "2026-07-12T00:00:00+00:00",
+        "value": 28,
+        "is_partial": false
+      },
+      {
+        "date": "2026-07-19T00:00:00+00:00",
+        "value": 26,
+        "is_partial": false
+      },
+      {
+        "date": "2026-07-26T00:00:00+00:00",
+        "value": 22,
+        "is_partial": false
+      },
+      {
+        "date": "2026-08-02T00:00:00+00:00",
+        "value": 23,
+        "is_partial": true
+      }
+    ],
+    "related_queries": {
+      "top": [
+        {
+          "query": "fashion trends 2026",
+          "value": 100,
+          "formatted_value": "100",
+          "link": "https://trends.google.com/trends/explore?q=fashion+trends+2026&date=today+12-m&geo=IN"
+        },
+        {
+          "query": "fashion trends 2025",
+          "value": 85,
+          "formatted_value": "85",
+          "link": "https://trends.google.com/trends/explore?q=fashion+trends+2025&date=today+12-m&geo=IN"
+        },
+        {
+          "query": "latest fashion trends",
+          "value": 39,
+          "formatted_value": "39",
+          "link": "https://trends.google.com/trends/explore?q=latest+fashion+trends&date=today+12-m&geo=IN"
+        },
+        {
+          "query": "new fashion trends",
+          "value": 24,
+          "formatted_value": "24",
+          "link": "https://trends.google.com/trends/explore?q=new+fashion+trends&date=today+12-m&geo=IN"
+        },
+        {
+          "query": "trends fashion online",
+          "value": 19,
+          "formatted_value": "19",
+          "link": "https://trends.google.com/trends/explore?q=trends+fashion+online&date=today+12-m&geo=IN"
+        },
+        {
+          "query": "trends online",
+          "value": 19,
+          "formatted_value": "19",
+          "link": "https://trends.google.com/trends/explore?q=trends+online&date=today+12-m&geo=IN"
+        },
+        {
+          "query": "latest trends in fashion",
+          "value": 18,
+          "formatted_value": "18",
+          "link": "https://trends.google.com/trends/explore?q=latest+trends+in+fashion&date=today+12-m&geo=IN"
+        },
+        {
+          "query": "current fashion trends",
+          "value": 18,
+          "formatted_value": "18",
+          "link": "https://trends.google.com/trends/explore?q=current+fashion+trends&date=today+12-m&geo=IN"
+        },
+        {
+          "query": "max",
+          "value": 16,
+          "formatted_value": "16",
+          "link": "https://trends.google.com/trends/explore?q=max&date=today+12-m&geo=IN"
+        },
+        {
+          "query": "latest fashion trends 2025",
+          "value": 16,
+          "formatted_value": "16",
+          "link": "https://trends.google.com/trends/explore?q=latest+fashion+trends+2025&date=today+12-m&geo=IN"
+        },
+        {
+          "query": "max fashion",
+          "value": 16,
+          "formatted_value": "16",
+          "link": "https://trends.google.com/trends/explore?q=max+fashion&date=today+12-m&geo=IN"
+        },
+        {
+          "query": "trends near me",
+          "value": 15,
+          "formatted_value": "15",
+          "link": "https://trends.google.com/trends/explore?q=trends+near+me&date=today+12-m&geo=IN"
+        },
+        {
+          "query": "google trends",
+          "value": 11,
+          "formatted_value": "11",
+          "link": "https://trends.google.com/trends/explore?q=google+trends&date=today+12-m&geo=IN"
+        },
+        {
+          "query": "reliance",
+          "value": 11,
+          "formatted_value": "11",
+          "link": "https://trends.google.com/trends/explore?q=reliance&date=today+12-m&geo=IN"
+        },
+        {
+          "query": "reliance trends",
+          "value": 11,
+          "formatted_value": "11",
+          "link": "https://trends.google.com/trends/explore?q=reliance+trends&date=today+12-m&geo=IN"
+        },
+        {
+          "query": "reliance fashion",
+          "value": 11,
+          "formatted_value": "11",
+          "link": "https://trends.google.com/trends/explore?q=reliance+fashion&date=today+12-m&geo=IN"
+        },
+        {
+          "query": "summer fashion trends 2026",
+          "value": 8,
+          "formatted_value": "8",
+          "link": "https://trends.google.com/trends/explore?q=summer+fashion+trends+2026&date=today+12-m&geo=IN"
+        },
+        {
+          "query": "recent fashion trends",
+          "value": 7,
+          "formatted_value": "7",
+          "link": "https://trends.google.com/trends/explore?q=recent+fashion+trends&date=today+12-m&geo=IN"
+        },
+        {
+          "query": "spring 2026 fashion trends",
+          "value": 7,
+          "formatted_value": "7",
+          "link": "https://trends.google.com/trends/explore?q=spring+2026+fashion+trends&date=today+12-m&geo=IN"
+        },
+        {
+          "query": "latest fashion trends in india",
+          "value": 6,
+          "formatted_value": "6",
+          "link": "https://trends.google.com/trends/explore?q=latest+fashion+trends+in+india&date=today+12-m&geo=IN"
+        },
+        {
+          "query": "latest fashion trends for women",
+          "value": 3,
+          "formatted_value": "3",
+          "link": "https://trends.google.com/trends/explore?q=latest+fashion+trends+for+women&date=today+12-m&geo=IN"
+        },
+        {
+          "query": "financial technology trends",
+          "value": 1,
+          "formatted_value": "1",
+          "link": "https://trends.google.com/trends/explore?q=financial+technology+trends&date=today+12-m&geo=IN"
+        },
+        {
+          "query": "areyoufashion.com",
+          "value": 1,
+          "formatted_value": "1",
+          "link": "https://trends.google.com/trends/explore?q=areyoufashion.com&date=today+12-m&geo=IN"
+        },
+        {
+          "query": "which trend had the biggest influence on mainstream fashion in the early 2000s?",
+          "value": 0,
+          "formatted_value": "<1",
+          "link": "https://trends.google.com/trends/explore?q=which+trend+had+the+biggest+influence+on+mainstream+fashion+in+the+early+2000s?&date=today+12-m&geo=IN"
+        }
+      ],
+      "rising": [
+        {
+          "query": "financial technology trends",
+          "value": 24250,
+          "formatted_value": "Breakout",
+          "link": "https://trends.google.com/trends/explore?q=financial+technology+trends&date=today+12-m&geo=IN"
+        },
+        {
+          "query": "areyoufashion.com",
+          "value": 20550,
+          "formatted_value": "Breakout",
+          "link": "https://trends.google.com/trends/explore?q=areyoufashion.com&date=today+12-m&geo=IN"
+        },
+        {
+          "query": "which trend had the biggest influence on mainstream fashion in the early 2000s?",
+          "value": 6700,
+          "formatted_value": "Breakout",
+          "link": "https://trends.google.com/trends/explore?q=which+trend+had+the+biggest+influence+on+mainstream+fashion+in+the+early+2000s?&date=today+12-m&geo=IN"
+        },
+        {
+          "query": "fashion trends 2026",
+          "value": 3450,
+          "formatted_value": "+3,450%",
+          "link": "https://trends.google.com/trends/explore?q=fashion+trends+2026&date=today+12-m&geo=IN"
+        },
+        {
+          "query": "spring 2026 fashion trends",
+          "value": 1400,
+          "formatted_value": "+1,400%",
+          "link": "https://trends.google.com/trends/explore?q=spring+2026+fashion+trends&date=today+12-m&geo=IN"
+        },
+        {
+          "query": "summer fashion trends 2026",
+          "value": 800,
+          "formatted_value": "+800%",
+          "link": "https://trends.google.com/trends/explore?q=summer+fashion+trends+2026&date=today+12-m&geo=IN"
+        },
+        {
+          "query": "latest fashion trends 2025",
+          "value": 350,
+          "formatted_value": "+350%",
+          "link": "https://trends.google.com/trends/explore?q=latest+fashion+trends+2025&date=today+12-m&geo=IN"
+        },
+        {
+          "query": "recent fashion trends",
+          "value": 170,
+          "formatted_value": "+170%",
+          "link": "https://trends.google.com/trends/explore?q=recent+fashion+trends&date=today+12-m&geo=IN"
+        },
+        {
+          "query": "fashion trends 2025",
+          "value": 100,
+          "formatted_value": "+100%",
+          "link": "https://trends.google.com/trends/explore?q=fashion+trends+2025&date=today+12-m&geo=IN"
+        },
+        {
+          "query": "google trends",
+          "value": 100,
+          "formatted_value": "+100%",
+          "link": "https://trends.google.com/trends/explore?q=google+trends&date=today+12-m&geo=IN"
+        },
+        {
+          "query": "new fashion trends",
+          "value": 90,
+          "formatted_value": "+90%",
+          "link": "https://trends.google.com/trends/explore?q=new+fashion+trends&date=today+12-m&geo=IN"
+        },
+        {
+          "query": "current fashion trends",
+          "value": 80,
+          "formatted_value": "+80%",
+          "link": "https://trends.google.com/trends/explore?q=current+fashion+trends&date=today+12-m&geo=IN"
+        },
+        {
+          "query": "trends near me",
+          "value": 50,
+          "formatted_value": "+50%",
+          "link": "https://trends.google.com/trends/explore?q=trends+near+me&date=today+12-m&geo=IN"
+        },
+        {
+          "query": "latest trends in fashion",
+          "value": 40,
+          "formatted_value": "+40%",
+          "link": "https://trends.google.com/trends/explore?q=latest+trends+in+fashion&date=today+12-m&geo=IN"
+        }
+      ]
+    },
+    "interest_by_region": [
+      {
+        "geo_code": "IN-DL",
+        "geo_name": "Delhi",
+        "value": 100
+      },
+      {
+        "geo_code": "IN-CH",
+        "geo_name": "Chandigarh",
+        "value": 77
+      },
+      {
+        "geo_code": "IN-MZ",
+        "geo_name": "Mizoram",
+        "value": 71
+      },
+      {
+        "geo_code": "IN-ML",
+        "geo_name": "Meghalaya",
+        "value": 71
+      },
+      {
+        "geo_code": "IN-HR",
+        "geo_name": "Haryana",
+        "value": 67
+      },
+      {
+        "geo_code": "IN-KL",
+        "geo_name": "Kerala",
+        "value": 67
+      },
+      {
+        "geo_code": "IN-KA",
+        "geo_name": "Karnataka",
+        "value": 65
+      },
+      {
+        "geo_code": "IN-TN",
+        "geo_name": "Tamil Nadu",
+        "value": 61
+      },
+      {
+        "geo_code": "IN-TG",
+        "geo_name": "Telangana",
+        "value": 60
+      },
+      {
+        "geo_code": "IN-MH",
+        "geo_name": "Maharashtra",
+        "value": 57
+      },
+      {
+        "geo_code": "IN-PB",
+        "geo_name": "Punjab",
+        "value": 56
+      },
+      {
+        "geo_code": "IN-GA",
+        "geo_name": "Goa",
+        "value": 50
+      },
+      {
+        "geo_code": "IN-GJ",
+        "geo_name": "Gujarat",
+        "value": 47
+      },
+      {
+        "geo_code": "IN-AP",
+        "geo_name": "Andhra Pradesh",
+        "value": 45
+      },
+      {
+        "geo_code": "IN-JK",
+        "geo_name": "Jammu and Kashmir",
+        "value": 42
+      },
+      {
+        "geo_code": "IN-RJ",
+        "geo_name": "Rajasthan",
+        "value": 40
+      },
+      {
+        "geo_code": "IN-WB",
+        "geo_name": "West Bengal",
+        "value": 38
+      },
+      {
+        "geo_code": "IN-HP",
+        "geo_name": "Himachal Pradesh",
+        "value": 38
+      },
+      {
+        "geo_code": "IN-UP",
+        "geo_name": "Uttar Pradesh",
+        "value": 37
+      },
+      {
+        "geo_code": "IN-AS",
+        "geo_name": "Assam",
+        "value": 36
+      },
+      {
+        "geo_code": "IN-TR",
+        "geo_name": "Tripura",
+        "value": 36
+      },
+      {
+        "geo_code": "IN-MP",
+        "geo_name": "Madhya Pradesh",
+        "value": 33
+      },
+      {
+        "geo_code": "IN-JH",
+        "geo_name": "Jharkhand",
+        "value": 31
+      },
+      {
+        "geo_code": "IN-UT",
+        "geo_name": "Uttarakhand",
+        "value": 28
+      },
+      {
+        "geo_code": "IN-OR",
+        "geo_name": "Odisha",
+        "value": 27
+      },
+      {
+        "geo_code": "IN-BR",
+        "geo_name": "Bihar",
+        "value": 25
+      },
+      {
+        "geo_code": "IN-CT",
+        "geo_name": "Chhattisgarh",
+        "value": 23
+      }
+    ]
+  },
+  {
+    "schema_version": "1.0",
+    "source": "explore",
+    "keyword": "trending products",
+    "geo": "IN",
+    "timeframe": "today 12-m",
+    "fetched_at": "2026-08-05T06:57:02.117645+00:00",
+    "count": 53,
+    "interest_over_time": [
+      {
+        "date": "2025-08-03T00:00:00+00:00",
+        "value": 50,
+        "is_partial": false
+      },
+      {
+        "date": "2025-08-10T00:00:00+00:00",
+        "value": 44,
+        "is_partial": false
+      },
+      {
+        "date": "2025-08-17T00:00:00+00:00",
+        "value": 37,
+        "is_partial": false
+      },
+      {
+        "date": "2025-08-24T00:00:00+00:00",
+        "value": 40,
+        "is_partial": false
+      },
+      {
+        "date": "2025-08-31T00:00:00+00:00",
+        "value": 30,
+        "is_partial": false
+      },
+      {
+        "date": "2025-09-07T00:00:00+00:00",
+        "value": 37,
+        "is_partial": false
+      },
+      {
+        "date": "2025-09-14T00:00:00+00:00",
+        "value": 25,
+        "is_partial": false
+      },
+      {
+        "date": "2025-09-21T00:00:00+00:00",
+        "value": 27,
+        "is_partial": false
+      },
+      {
+        "date": "2025-09-28T00:00:00+00:00",
+        "value": 68,
+        "is_partial": false
+      },
+      {
+        "date": "2025-10-05T00:00:00+00:00",
+        "value": 40,
+        "is_partial": false
+      },
+      {
+        "date": "2025-10-12T00:00:00+00:00",
+        "value": 58,
+        "is_partial": false
+      },
+      {
+        "date": "2025-10-19T00:00:00+00:00",
+        "value": 31,
+        "is_partial": false
+      },
+      {
+        "date": "2025-10-26T00:00:00+00:00",
+        "value": 41,
+        "is_partial": false
+      },
+      {
+        "date": "2025-11-02T00:00:00+00:00",
+        "value": 65,
+        "is_partial": false
+      },
+      {
+        "date": "2025-11-09T00:00:00+00:00",
+        "value": 63,
+        "is_partial": false
+      },
+      {
+        "date": "2025-11-16T00:00:00+00:00",
+        "value": 59,
+        "is_partial": false
+      },
+      {
+        "date": "2025-11-23T00:00:00+00:00",
+        "value": 83,
+        "is_partial": false
+      },
+      {
+        "date": "2025-11-30T00:00:00+00:00",
+        "value": 93,
+        "is_partial": false
+      },
+      {
+        "date": "2025-12-07T00:00:00+00:00",
+        "value": 84,
+        "is_partial": false
+      },
+      {
+        "date": "2025-12-14T00:00:00+00:00",
+        "value": 97,
+        "is_partial": false
+      },
+      {
+        "date": "2025-12-21T00:00:00+00:00",
+        "value": 82,
+        "is_partial": false
+      },
+      {
+        "date": "2025-12-28T00:00:00+00:00",
+        "value": 82,
+        "is_partial": false
+      },
+      {
+        "date": "2026-01-04T00:00:00+00:00",
+        "value": 74,
+        "is_partial": false
+      },
+      {
+        "date": "2026-01-11T00:00:00+00:00",
+        "value": 85,
+        "is_partial": false
+      },
+      {
+        "date": "2026-01-18T00:00:00+00:00",
+        "value": 98,
+        "is_partial": false
+      },
+      {
+        "date": "2026-01-25T00:00:00+00:00",
+        "value": 100,
+        "is_partial": false
+      },
+      {
+        "date": "2026-02-01T00:00:00+00:00",
+        "value": 89,
+        "is_partial": false
+      },
+      {
+        "date": "2026-02-08T00:00:00+00:00",
+        "value": 73,
+        "is_partial": false
+      },
+      {
+        "date": "2026-02-15T00:00:00+00:00",
+        "value": 73,
+        "is_partial": false
+      },
+      {
+        "date": "2026-02-22T00:00:00+00:00",
+        "value": 72,
+        "is_partial": false
+      },
+      {
+        "date": "2026-03-01T00:00:00+00:00",
+        "value": 56,
+        "is_partial": false
+      },
+      {
+        "date": "2026-03-08T00:00:00+00:00",
+        "value": 63,
+        "is_partial": false
+      },
+      {
+        "date": "2026-03-15T00:00:00+00:00",
+        "value": 78,
+        "is_partial": false
+      },
+      {
+        "date": "2026-03-22T00:00:00+00:00",
+        "value": 61,
+        "is_partial": false
+      },
+      {
+        "date": "2026-03-29T00:00:00+00:00",
+        "value": 53,
+        "is_partial": false
+      },
+      {
+        "date": "2026-04-05T00:00:00+00:00",
+        "value": 55,
+        "is_partial": false
+      },
+      {
+        "date": "2026-04-12T00:00:00+00:00",
+        "value": 60,
+        "is_partial": false
+      },
+      {
+        "date": "2026-04-19T00:00:00+00:00",
+        "value": 48,
+        "is_partial": false
+      },
+      {
+        "date": "2026-04-26T00:00:00+00:00",
+        "value": 58,
+        "is_partial": false
+      },
+      {
+        "date": "2026-05-03T00:00:00+00:00",
+        "value": 48,
+        "is_partial": false
+      },
+      {
+        "date": "2026-05-10T00:00:00+00:00",
+        "value": 49,
+        "is_partial": false
+      },
+      {
+        "date": "2026-05-17T00:00:00+00:00",
+        "value": 39,
+        "is_partial": false
+      },
+      {
+        "date": "2026-05-24T00:00:00+00:00",
+        "value": 45,
+        "is_partial": false
+      },
+      {
+        "date": "2026-05-31T00:00:00+00:00",
+        "value": 50,
+        "is_partial": false
+      },
+      {
+        "date": "2026-06-07T00:00:00+00:00",
+        "value": 44,
+        "is_partial": false
+      },
+      {
+        "date": "2026-06-14T00:00:00+00:00",
+        "value": 35,
+        "is_partial": false
+      },
+      {
+        "date": "2026-06-21T00:00:00+00:00",
+        "value": 39,
+        "is_partial": false
+      },
+      {
+        "date": "2026-06-28T00:00:00+00:00",
+        "value": 48,
+        "is_partial": false
+      },
+      {
+        "date": "2026-07-05T00:00:00+00:00",
+        "value": 37,
+        "is_partial": false
+      },
+      {
+        "date": "2026-07-12T00:00:00+00:00",
+        "value": 35,
+        "is_partial": false
+      },
+      {
+        "date": "2026-07-19T00:00:00+00:00",
+        "value": 37,
+        "is_partial": false
+      },
+      {
+        "date": "2026-07-26T00:00:00+00:00",
+        "value": 34,
+        "is_partial": false
+      },
+      {
+        "date": "2026-08-02T00:00:00+00:00",
+        "value": 32,
+        "is_partial": true
+      }
+    ],
+    "related_queries": {
+      "top": [],
+      "rising": []
+    },
+    "interest_by_region": [
+      {
+        "geo_code": "IN-DL",
+        "geo_name": "Delhi",
+        "value": 100
+      },
+      {
+        "geo_code": "IN-HR",
+        "geo_name": "Haryana",
+        "value": 80
+      },
+      {
+        "geo_code": "IN-GJ",
+        "geo_name": "Gujarat",
+        "value": 70
+      },
+      {
+        "geo_code": "IN-CH",
+        "geo_name": "Chandigarh",
+        "value": 64
+      },
+      {
+        "geo_code": "IN-PB",
+        "geo_name": "Punjab",
+        "value": 54
+      },
+      {
+        "geo_code": "IN-KL",
+        "geo_name": "Kerala",
+        "value": 53
+      },
+      {
+        "geo_code": "IN-MH",
+        "geo_name": "Maharashtra",
+        "value": 53
+      },
+      {
+        "geo_code": "IN-TN",
+        "geo_name": "Tamil Nadu",
+        "value": 50
+      },
+      {
+        "geo_code": "IN-TG",
+        "geo_name": "Telangana",
+        "value": 48
+      },
+      {
+        "geo_code": "IN-ML",
+        "geo_name": "Meghalaya",
+        "value": 48
+      },
+      {
+        "geo_code": "IN-KA",
+        "geo_name": "Karnataka",
+        "value": 45
+      },
+      {
+        "geo_code": "IN-UP",
+        "geo_name": "Uttar Pradesh",
+        "value": 41
+      },
+      {
+        "geo_code": "IN-RJ",
+        "geo_name": "Rajasthan",
+        "value": 41
+      },
+      {
+        "geo_code": "IN-MP",
+        "geo_name": "Madhya Pradesh",
+        "value": 38
+      },
+      {
+        "geo_code": "IN-WB",
+        "geo_name": "West Bengal",
+        "value": 37
+      },
+      {
+        "geo_code": "IN-AS",
+        "geo_name": "Assam",
+        "value": 35
+      },
+      {
+        "geo_code": "IN-JK",
+        "geo_name": "Jammu and Kashmir",
+        "value": 35
+      },
+      {
+        "geo_code": "IN-AP",
+        "geo_name": "Andhra Pradesh",
+        "value": 35
+      },
+      {
+        "geo_code": "IN-BR",
+        "geo_name": "Bihar",
+        "value": 33
+      },
+      {
+        "geo_code": "IN-TR",
+        "geo_name": "Tripura",
+        "value": 33
+      },
+      {
+        "geo_code": "IN-JH",
+        "geo_name": "Jharkhand",
+        "value": 27
+      },
+      {
+        "geo_code": "IN-OR",
+        "geo_name": "Odisha",
+        "value": 27
+      },
+      {
+        "geo_code": "IN-UT",
+        "geo_name": "Uttarakhand",
+        "value": 25
+      },
+      {
+        "geo_code": "IN-CT",
+        "geo_name": "Chhattisgarh",
+        "value": 25
+      },
+      {
+        "geo_code": "IN-HP",
+        "geo_name": "Himachal Pradesh",
+        "value": 22
+      }
+    ]
+  }
+]

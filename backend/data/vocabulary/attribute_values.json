@@ -1,0 +1,26 @@
+{
+  "source": "https://github.com/Shopify/product-taxonomy",
+  "source_file": "data/values.yml + data/attributes.yml",
+  "version": "2026-08-unstable",
+  "fetched": "2026-08-05",
+  "note": "Curated subset, not the full attribute system (that file is 300k+ lines covering every vertical). Only footwear style attribute values distinctive enough to be low-risk as standalone text triggers. This is what lets the tagger recognise that this catalog's literal product_type 'slides' IS Shopify's 'Sandals' category (style: Slide) - a real vocabulary fact, not a guess - instead of the two words having nothing in common. Generic single-word attribute values (activity/sport names like 'Cricket', 'Basketball'; style words like 'Casual', 'Athletic', 'Fashion', 'Comfort') were deliberately left out after live testing showed they false-positive on ordinary news text - e.g. 'Cricket' as a sneaker activity value made routine Indian cricket news tag as shoe-relevant, which is exactly the failure mode the relevance gate exists to prevent. Distinctive footwear-specific terms (Gladiator, Huarache, Slide, High-top, ...) essentially never appear outside footwear context, so they stay.",
+  "values": [
+    {"id": "sandal_style__ankle_strap", "name": "Ankle strap", "attribute": "sandal_style", "category_id": "aa-8-6", "category_name": "Sandals"},
+    {"id": "sandal_style__clogs", "name": "Clogs", "attribute": "sandal_style", "category_id": "aa-8-6", "category_name": "Sandals"},
+    {"id": "sandal_style__fisherman", "name": "Fisherman", "attribute": "sandal_style", "category_id": "aa-8-6", "category_name": "Sandals"},
+    {"id": "sandal_style__flip_flop", "name": "Flip-flop", "attribute": "sandal_style", "category_id": "aa-8-6", "category_name": "Sandals"},
+    {"id": "sandal_style__gladiator", "name": "Gladiator", "attribute": "sandal_style", "category_id": "aa-8-6", "category_name": "Sandals"},
+    {"id": "sandal_style__huarache", "name": "Huarache", "attribute": "sandal_style", "category_id": "aa-8-6", "category_name": "Sandals"},
+    {"id": "sandal_style__lace_up", "name": "Lace-up", "attribute": "sandal_style", "category_id": "aa-8-6", "category_name": "Sandals"},
+    {"id": "sandal_style__mule_flat", "name": "Mule flat", "attribute": "sandal_style", "category_id": "aa-8-6", "category_name": "Sandals"},
+    {"id": "sandal_style__slide", "name": "Slide", "attribute": "sandal_style", "category_id": "aa-8-6", "category_name": "Sandals"},
+    {"id": "sandal_style__slingback", "name": "Slingback", "attribute": "sandal_style", "category_id": "aa-8-6", "category_name": "Sandals"},
+    {"id": "sandal_style__t_strap", "name": "T-strap", "attribute": "sandal_style", "category_id": "aa-8-6", "category_name": "Sandals"},
+    {"id": "sandal_style__thong", "name": "Thong", "attribute": "sandal_style", "category_id": "aa-8-6", "category_name": "Sandals"},
+    {"id": "sandal_style__toe_ring", "name": "Toe ring", "attribute": "sandal_style", "category_id": "aa-8-6", "category_name": "Sandals"},
+
+    {"id": "sneaker_style__high_top", "name": "High-top", "attribute": "sneaker_style", "category_id": "aa-8-8", "category_name": "Sneakers"},
+    {"id": "sneaker_style__low_top", "name": "Low-top", "attribute": "sneaker_style", "category_id": "aa-8-8", "category_name": "Sneakers"},
+    {"id": "sneaker_style__slip_on", "name": "Slip-on", "attribute": "sneaker_style", "category_id": "aa-8-8", "category_name": "Sneakers"}
+  ]
+}

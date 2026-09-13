@@ -1,0 +1,50 @@
+[
+  {
+    "scenario": "movie_release_spike",
+    "note": "Flat for months, then a release-day jump. Tests spike_ratio on a sudden step change.",
+    "expected_classification": "spiking",
+    "values": [12, 10, 11, 13, 12, 10, 11, 12, 13, 11, 12, 10, 11, 13, 12, 58]
+  },
+  {
+    "scenario": "tiktok_viral_style",
+    "note": "Viral sound drives a silhouette. Ramps hard over ~4 weeks rather than overnight.",
+    "expected_classification": "spiking",
+    "values": [8, 9, 7, 8, 9, 8, 7, 9, 8, 9, 10, 12, 18, 29, 44, 52]
+  },
+  {
+    "scenario": "seasonal_early_ramp",
+    "note": "Warm-season ramp starting earlier than usual. Gradual, never trips the spike threshold.",
+    "expected_classification": "rising",
+    "values": [20, 18, 19, 21, 20, 22, 21, 23, 25, 27, 29, 31, 33, 35, 36, 38]
+  },
+  {
+    "scenario": "celebrity_moment",
+    "note": "Single photographed moment. Sharp spike off a flat baseline, expected to fade fast.",
+    "expected_classification": "spiking",
+    "values": [15, 14, 16, 15, 17, 14, 15, 16, 15, 14, 16, 15, 14, 16, 15, 49]
+  },
+  {
+    "scenario": "sports_event_climb",
+    "note": "Climbs each week a team advances. Deliberately lands just under spike_ratio 2.0 to test the boundary.",
+    "expected_classification": "rising",
+    "values": [10, 11, 10, 12, 11, 13, 12, 15, 18, 22, 26, 30, 34, 38, 42, 46]
+  },
+  {
+    "scenario": "gap_no_catalog_match",
+    "note": "Genuine spike in a category absent from this catalog. Deliberate miss - tests the gap path (see tests/test_matching.py, which builds this case from real catalog vocabulary rather than an invented keyword).",
+    "expected_classification": "spiking",
+    "values": [9, 8, 10, 9, 8, 9, 10, 8, 9, 10, 9, 8, 12, 19, 28, 35]
+  },
+  {
+    "scenario": "declining_trend",
+    "note": "Was hot two months ago, now steadily fading. Should trigger discount/deprioritise advice.",
+    "expected_classification": "falling",
+    "values": [60, 58, 55, 52, 50, 47, 44, 40, 37, 33, 30, 27, 24, 22, 20, 18]
+  },
+  {
+    "scenario": "weather_regional_spike",
+    "note": "Heatwave hits one region, so the national series stays flat. Proves national data alone misses this - needs interest_by_region.",
+    "expected_classification": "steady",
+    "values": [25, 24, 26, 25, 27, 26, 25, 27, 26, 28, 27, 29, 28, 30, 29, 31]
+  }
+]
