@@ -50,14 +50,7 @@ def exa_api_key():
 def calendarific_api_key():
     return _first_env("CALENDARIFIC_API_KEY", "CALENDARIFIC", "CALENDIRIFIC")
 
-
-def has_groq():
-    return bool(groq_api_key())
-
-
-def has_exa():
-    return bool(exa_api_key())
-
-
-def has_calendarific():
-    return bool(calendarific_api_key())
+# No has_*() helpers here on purpose: each client owns its own is_available(),
+# which is what callers actually use (llm.is_available, exa_client.is_available,
+# llm_groq.is_available). A second way to ask the same question just invites
+# the two to drift.

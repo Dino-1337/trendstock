@@ -23,7 +23,7 @@ def test_init_db_creates_expected_tables(conn):
         row["name"]
         for row in conn.execute("SELECT name FROM sqlite_master WHERE type = 'table'")
     }
-    assert {"api_cache", "events", "category_event_signals", "evidence"} <= names
+    assert {"api_cache", "events", "signals", "evidence"} <= names
 
 
 def test_init_db_stamps_schema_version(conn):
@@ -48,32 +48,46 @@ def test_foreign_keys_are_enforced(conn):
 
 def test_deleting_a_signal_cascades_to_evidence(conn):
     conn.execute(
-        "INSERT INTO events (id, name, event_date, created_at, updated_at) VALUES (1, 'Diwali', '2026-11-08', ?, ?)",
-        (NOW.isoformat(), NOW.isoformat()),
-    )
-    conn.execute(
-        """INSERT INTO category_event_signals (id, category, event_id, phase, created_at, updated_at)
-           VALUES (1, 'Ethnic Wear', 1, 'bulk', ?, ?)""",
+        """INSERT INTO signals (id, signal_type, name, event_date, phase, created_at, updated_at)
+           VALUES (1, 'event', 'Diwali', '2026-11-08', 'bulk', ?, ?)""",
         (NOW.isoformat(), NOW.isoformat()),
     )
     conn.execute(
         "INSERT INTO evidence (signal_id, kind, retrieved_at) VALUES (1, 'search_result', ?)",
         (NOW.isoformat(),),
     )
-    conn.execute("DELETE FROM category_event_signals WHERE id = 1")
+    conn.execute("DELETE FROM signals WHERE id = 1")
     assert conn.execute("SELECT COUNT(*) FROM evidence").fetchone()[0] == 0
 
 
-def test_one_signal_per_category_event_pair(conn):
-    conn.execute(
-        "INSERT INTO events (id, name, event_date, created_at, updated_at) VALUES (1, 'Diwali', '2026-11-08', ?, ?)",
-        (NOW.isoformat(), NOW.isoformat()),
-    )
-    stmt = """INSERT INTO category_event_signals (category, event_id, phase, created_at, updated_at)
-              VALUES ('Ethnic Wear', 1, 'bulk', ?, ?)"""
+def test_one_signal_per_type_name_and_date(conn):
+    stmt = """INSERT INTO signals (signal_type, name, event_date, phase, created_at, updated_at)
+              VALUES ('event', 'Diwali', '2026-11-08', 'bulk', ?, ?)"""
     conn.execute(stmt, (NOW.isoformat(), NOW.isoformat()))
     with pytest.raises(Exception):
         conn.execute(stmt, (NOW.isoformat(), NOW.isoformat()))
+
+
+def test_replaced_tables_are_dropped_on_upgrade(tmp_path):
+    """A stale table shape must not survive an upgrade.
+
+    CREATE TABLE IF NOT EXISTS would silently leave the old columns in place,
+    and the failure would surface later as a query hitting a column that is
+    not there.
+    """
+    path = tmp_path / "old.db"
+    conn = db.connect(path)
+    conn.execute("CREATE TABLE category_event_signals (id INTEGER PRIMARY KEY)")
+    conn.execute("PRAGMA user_version = 3")
+    conn.commit()
+
+    db.init_db(conn)
+
+    names = {r["name"] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+    assert "category_event_signals" not in names
+    assert "signals" in names
+    assert db.schema_version(conn) == db.SCHEMA_VERSION
+    conn.close()
 
 
 # --- api cache ------------------------------------------------------------

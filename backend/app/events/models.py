@@ -39,6 +39,11 @@ class EventType(str, Enum):
     REGIONAL = "regional"
     RELIGIOUS = "religious"
     SEASONAL = "seasonal"
+    # Calendarific's largest Indian bucket by far: "Restricted Holiday" /
+    # "Optional holiday" / "Observance". Not a public holiday, but plenty of
+    # these still move product (Karwa Chauth, Dhanteras), so they are kept
+    # rather than filtered out.
+    OBSERVANCE = "observance"
 
 
 class Phase(str, Enum):

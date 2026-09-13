@@ -24,16 +24,16 @@ async function getJson(path, shapeCheck) {
   return { data: body, error: null }
 }
 
+// Home screen: the smallest number of things worth acting on this week, not a
+// KPI grid. `ready: false` means the catalog hasn't been analysed yet.
 export function getDashboard() {
-  return getJson('/dashboard', (b) => Array.isArray(b.stats) && b.momentum_chart)
+  return getJson('/dashboard', (b) => typeof b.ready === 'boolean')
 }
 
-export function getTrends() {
-  return getJson('/trends', (b) => Array.isArray(b.trends))
-}
-
-export function getCatalog() {
-  return getJson('/catalog', (b) => Array.isArray(b.products) && Array.isArray(b.gaps))
+// Raw trend-feed fetch health (independent of analysis) — used by the
+// sidebar's "N of 7 days collected" indicator.
+export function getPipelineStatus() {
+  return getJson('/pipeline-status', (b) => typeof b.snapshot_count === 'number')
 }
 
 // Upload/preview report exactly what the backend said. Column validation and
@@ -59,22 +59,46 @@ async function postCsv(path, file) {
 // Dry run: same validation/parsing as uploadCsv, but the backend persists
 // nothing. Lets the UI show a review step (grouped products, counts,
 // warnings) before the user commits the import.
-// Clears the product tag cache and tags again from scratch. Manual because
-// tagging is cached: a run that fell back to rule-based (Groq rate limited)
-// otherwise stays that way, and the seller has no way to ask for another try.
-export async function retagCatalog() {
-  const res = await fetch('/api/catalog/retag', { method: 'POST' })
-  const body = await res.json().catch(() => null)
-  if (!res.ok || typeof body?.ok !== 'boolean') {
-    throw new Error(body?.error || `Re-tag failed (${res.status})`)
-  }
-  return body
-}
-
 export function previewCsv(file) {
   return postCsv('/api/upload/preview', file)
 }
 
 export function uploadCsv(file) {
   return postCsv('/api/upload', file)
+}
+
+// The catalog with its AI-derived columns (occasions, materials, audience,
+// price tier). `enriched: false` means nothing has been analysed yet — the UI
+// offers to start it rather than showing an empty table that looks broken.
+export function getCatalog() {
+  return getJson('/catalog', (b) => Array.isArray(b.products))
+}
+
+// One product's full detail: enrichment, a stock-depletion projection, and
+// every signal that matches it.
+export function getProductDetail(productId) {
+  return getJson(`/catalog/${encodeURIComponent(productId)}`, (b) => b.product)
+}
+
+// Enrichment is minutes, not milliseconds — one model call per batch of ten
+// products — so it runs as a background job and the UI polls for progress.
+// Returns the initial job record, including its job_id.
+export async function startEnrichment() {
+  const res = await fetch('/api/enrich', { method: 'POST' })
+  const body = await res.json().catch(() => null)
+  if (!res.ok || body?.ok !== true) {
+    throw new Error(body?.error || `Could not start analysis (${res.status})`)
+  }
+  return body
+}
+
+export function getJobStatus(jobId) {
+  return getJson(`/jobs/${jobId}`, (b) => typeof b.stage === 'string')
+}
+
+// Upcoming events/seasons, what each affects, and which products are about to
+// run out because of them. `ready: false` carries a `reason` explaining what
+// is still missing rather than rendering an empty page.
+export function getAlerts() {
+  return getJson('/alerts', (b) => Array.isArray(b.signals) && Array.isArray(b.warnings))
 }

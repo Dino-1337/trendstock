@@ -16,13 +16,10 @@ import random
 
 from app.catalog.canonicalize import canonicalize_reader
 
-from app.storage.paths import DATA_DIR, FIXTURES_DIR, UPLOADS_DIR  # noqa: F401
+from app.storage.paths import FIXTURES_DIR, UPLOADS_DIR
 
 DEFAULT_CATALOG_CSV = FIXTURES_DIR / "shopify_products.csv"
 CURRENT_CATALOG_CSV = UPLOADS_DIR / "current_catalog.csv"
-
-# Kept for backwards compatibility with any existing callers/imports.
-CATALOG_CSV = DEFAULT_CATALOG_CSV
 
 
 def active_catalog_path():

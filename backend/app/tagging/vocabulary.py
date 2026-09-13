@@ -28,6 +28,7 @@ import re
 from app.storage.paths import VOCAB_DIR
 CATEGORIES_PATH = VOCAB_DIR / "categories.json"
 ATTRIBUTE_VALUES_PATH = VOCAB_DIR / "attribute_values.json"
+SYNONYMS_PATH = VOCAB_DIR / "synonyms.json"
 
 
 def _load_json(path):
@@ -42,17 +43,107 @@ def _singularize(word):
     return word
 
 
+def _phrase_to_regex(phrase):
+    """One phrase -> a regex source string, or None if it has no word chars.
+
+    Non-Latin phrases (Devanagari, Bengali) are escaped literally rather than
+    stemmed: `[a-z0-9]+` matches nothing in those scripts, and plural/stem
+    rules built for English do not apply. Without this branch every non-Latin
+    synonym would silently compile to None.
+    """
+    if not phrase or not phrase.strip():
+        return None
+
+    words = re.findall(r"[a-z0-9]+", phrase.lower())
+    if not words:
+        # No ASCII word characters - treat the whole phrase as a literal.
+        return re.escape(phrase.strip()) if phrase.strip() else None
+
+    parts = [re.escape(_singularize(w)) + "s?" for w in words]
+    return r"[\s-]?".join(parts)
+
+
+def _split_coordinated(name):
+    """Split a coordinated category name into the phrases it actually denotes.
+
+    Names coordinate with '&' and ',' in two different ways, and conflating
+    them is what broke the old tagger (which stripped '&' and then required
+    every word contiguously, so "Kurtas & Kurta Sets" became a pattern needing
+    the literal text "kurtas kurta sets" - unmatchable; 110 of 557 names, 20%
+    of the vocabulary and most of the Indian-wear entries, were dead weight).
+
+    The two forms:
+
+    1. Coordinate nouns - each part stands alone:
+           "Saris & Lehengas"     -> Saris | Lehengas
+    2. Elliptical, where a leading modifier distributes across the parts:
+           "Snow Pants & Suits"   -> Snow Pants | Snow Suits
+           "Bridal Dupattas & Shawls" -> Bridal Dupattas | Bridal Shawls
+
+    Naively splitting form 2 yields a bare head noun ("Suits") that matches far
+    too much - live check: "anarkali suit" matched "Snow Pants & Suits".
+
+    Heuristic: if the first part is multi-word, its leading words are a shared
+    modifier and are distributed onto later single-word parts. If the first
+    part is a single word there is no modifier to share, so parts stand alone.
+    Verified against the real vocabulary on "Dance Dresses, Skirts & Costumes"
+    (-> Dance Dresses | Dance Skirts | Dance Costumes) and
+    "Activewear Sweatshirts & Hoodies".
+    """
+    parts = [p.strip() for p in re.split(r"[&,]", name) if p.strip()]
+    if len(parts) <= 1:
+        return [name]
+
+    head_words = parts[0].split()
+    modifier = " ".join(head_words[:-1]) if len(head_words) > 1 else ""
+
+    phrases = [parts[0]]
+    for part in parts[1:]:
+        # Only single-word tails are treated as elliptical; a multi-word tail
+        # ("Kurta Sets") already carries its own modifier.
+        if modifier and len(part.split()) == 1:
+            phrases.append(f"{modifier} {part}")
+        else:
+            phrases.append(part)
+    return phrases
+
+
 def _name_to_pattern(name):
     """'T-Shirts' -> a regex matching 'tshirts', 't shirts', 't-shirt', 'tshirt', ...
     Every word is reduced to its singular stem then made optionally-plural, and
     inter-word separators (space/hyphen) become optional, so the catalog's
     fused CSV values ('tshirts') and natural English trend text ('T-Shirts',
-    't shirts', singular or plural) all match the same pattern."""
-    words = re.findall(r"[a-z0-9]+", name.lower())
-    if not words:
+    't shirts', singular or plural) all match the same pattern.
+
+    Coordinated names ("A & B") become alternatives rather than a required
+    sequence - see _split_coordinated for how the two coordination forms are
+    told apart.
+    """
+    phrases = _split_coordinated(name)
+    sources = []
+    for phrase in phrases:
+        source = _phrase_to_regex(phrase)
+        if not source:
+            continue
+        # \b is defined by \w, which is Latin-centric in practice: "साड़ी" ends
+        # in a combining vowel sign whose isalnum() is False, so a trailing \b
+        # can never match and every Devanagari/Bengali term compiled to a
+        # pattern that silently matched nothing. Boundaries are therefore
+        # applied only to ASCII phrases; non-Latin terms are matched bare,
+        # which is safe because they are specific multi-character words.
+        if phrase.isascii():
+            sources.append(r"\b" + source + r"\b")
+        else:
+            sources.append(source)
+
+    if not sources:
         return None
-    parts = [re.escape(_singularize(w)) + "s?" for w in words]
-    pattern = r"\b" + r"[\s-]?".join(parts) + r"\b"
+
+    # Longest first so the more specific alternative wins the match position
+    # ("Saris & Lehengas" should report the phrase it actually found).
+    sources.sort(key=len, reverse=True)
+    pattern = "(?:" + "|".join(sources) + ")"
+
     # IGNORECASE matters: patterns are built from lowercased vocabulary names,
     # but they are matched against raw product/trend text. A real Shopify
     # export capitalises its Type column ("T-Shirt", "Jeans", "Sneakers"), so
@@ -75,9 +166,11 @@ class VocabTerm:
 class Vocabulary:
     """Loaded once, reused by both taggers and the relevance gate."""
 
-    def __init__(self, categories_path=CATEGORIES_PATH, attribute_values_path=ATTRIBUTE_VALUES_PATH):
+    def __init__(self, categories_path=CATEGORIES_PATH, attribute_values_path=ATTRIBUTE_VALUES_PATH,
+                 synonyms_path=SYNONYMS_PATH):
         categories_doc = _load_json(categories_path)
         attributes_doc = _load_json(attribute_values_path)
+        synonyms_doc = _load_json(synonyms_path) if synonyms_path and synonyms_path.exists() else {}
 
         self.version = categories_doc.get("version")
         self.source = categories_doc.get("source")
@@ -123,6 +216,28 @@ class Vocabulary:
             terms.append(VocabTerm(
                 tag=category_name, label=label, pattern=pattern,
                 kind="attribute_value", detail=value.get("attribute"),
+            ))
+
+        # Curated synonyms: extra ways to FIND an existing category, never new
+        # tags. A synonym whose tag is not a real category name is dropped
+        # rather than silently widening the tag set - the whole point of a
+        # controlled vocabulary is that nothing invents a term.
+        valid_names = {name.lower(): name for name in self.category_names}
+        self.synonyms_version = synonyms_doc.get("version")
+        self.dropped_synonyms = []
+        for entry in synonyms_doc.get("synonyms", []):
+            term = (entry.get("term") or "").strip()
+            target = (entry.get("tag") or "").strip()
+            canonical = valid_names.get(target.lower())
+            if not term or not canonical:
+                if term:
+                    self.dropped_synonyms.append({"term": term, "tag": target})
+                continue
+            pattern = _name_to_pattern(term)
+            if pattern is None:
+                continue
+            terms.append(VocabTerm(
+                tag=canonical, label=term, pattern=pattern, kind="synonym",
             ))
 
         self.terms = terms

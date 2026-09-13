@@ -47,16 +47,6 @@ export function formatDateTime(iso) {
   }).format(d)
 }
 
-export function formatDayWeekday(iso) {
-  if (!iso) return { day: '—', weekday: '—' }
-  const d = new Date(iso)
-  if (Number.isNaN(d.getTime())) return { day: '—', weekday: '—' }
-  return {
-    day: new Intl.DateTimeFormat('en-US', { day: '2-digit' }).format(d),
-    weekday: new Intl.DateTimeFormat('en-US', { weekday: 'short' }).format(d),
-  }
-}
-
 export function initials(name) {
   if (!name) return '?'
   const parts = name.trim().split(/\s+/).filter(Boolean)

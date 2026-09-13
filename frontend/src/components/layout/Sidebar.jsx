@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import {
   Diamond,
   LayoutGrid,
-  TrendingUp,
+  BellRing,
   Package,
   UploadCloud,
   X,
@@ -14,7 +14,7 @@ import { formatDateTime } from '../../lib/format'
 
 const NAV_ITEMS = [
   { to: '/', label: 'Dashboard', icon: LayoutGrid, end: true },
-  { to: '/trends', label: 'Trends', icon: TrendingUp },
+  { to: '/alerts', label: 'Alerts', icon: BellRing },
   { to: '/catalog', label: 'Catalog', icon: Package },
   { to: '/upload', label: 'Upload', icon: UploadCloud },
 ]
@@ -78,13 +78,14 @@ function SidebarContent({ onNavigate }) {
   )
 }
 
-// Real pipeline status, sourced from /api/trends (shared via AppDataContext
-// so it doesn't trigger its own fetch on top of the Trends page's). Momentum
-// classification needs ~7 days of daily snapshots (see api-contract.md), so
-// snapshot_count / 7 is an honest progress ratio — not an invented one.
+// Real pipeline status, sourced from /api/pipeline-status (shared via
+// AppDataContext so it doesn't trigger its own fetch). This reports the raw
+// Google Trends fetch history, independent of whether a catalog has been
+// analysed — momentum classification needs ~7 days of daily snapshots, so
+// snapshot_count / 7 is an honest progress ratio, not an invented one.
 function PipelineStatusCard() {
-  const { trends } = useAppData()
-  const { data, loading, error } = trends
+  const { pipelineStatus } = useAppData()
+  const { data, loading, error } = pipelineStatus
 
   return (
     <div className="rounded-chip bg-cream p-4">

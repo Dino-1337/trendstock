@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react'
 
 // Generic loader around the api.js getters. `fetcher` is one of
-// getDashboard / getTrends / getCatalog — anything shaped like
+// getDashboard / getCatalog / getAlerts — anything shaped like
 // () => Promise<{ data, error }>.
 export function useApiData(fetcher, deps = []) {
   const [state, setState] = useState({

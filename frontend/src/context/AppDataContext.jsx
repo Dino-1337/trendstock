@@ -1,21 +1,25 @@
 import { createContext, useContext } from 'react'
 import { useApiData } from '../hooks/useApiData'
-import { getTrends, getCatalog } from '../lib/api'
+import { getCatalog, getPipelineStatus } from '../lib/api'
 
-// Sidebar and Topbar both need a sliver of real data (geo, pipeline
-// freshness, catalog size) that otherwise lives inside the Trends and
-// Catalog pages' own full fetches. Rather than have the shell fire its own
-// extra requests, this context is the *single* fetch of /api/trends and
-// /api/catalog for the whole app — Trends.jsx and Catalog.jsx consume the
-// same state instead of calling useApiData themselves, so navigating
-// between routes never re-fetches data the shell already has.
+// Sidebar and Topbar both need a sliver of real data (pipeline freshness,
+// catalog size) that otherwise lives inside the Catalog page's own full
+// fetch. Rather than have the shell fire its own extra requests, this
+// context is the *single* fetch of /api/catalog and /api/pipeline-status for
+// the whole app — Catalog.jsx consumes the same state instead of calling
+// useApiData itself, so navigating between routes never re-fetches data the
+// shell already has.
 const AppDataContext = createContext(null)
 
 export function AppDataProvider({ children }) {
-  const trends = useApiData(getTrends, [])
   const catalog = useApiData(getCatalog, [])
+  const pipelineStatus = useApiData(getPipelineStatus, [])
 
-  return <AppDataContext.Provider value={{ trends, catalog }}>{children}</AppDataContext.Provider>
+  return (
+    <AppDataContext.Provider value={{ catalog, pipelineStatus }}>
+      {children}
+    </AppDataContext.Provider>
+  )
 }
 
 export function useAppData() {

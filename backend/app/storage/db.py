@@ -29,7 +29,18 @@ from contextlib import contextmanager
 
 from app.storage.paths import DB_PATH
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 4
+
+# Tables replaced rather than migrated in place. Everything here is derived -
+# rebuildable from the raw snapshots, the API caches and the catalog - so
+# dropping is cheaper and clearer than writing a real migration for data that
+# has no independent source of truth. Raw snapshots and api_cache are never in
+# this list; those are the things that would actually cost something to lose.
+_REPLACED_TABLES = {
+    # v4 replaced the per-(category, event) table with one row per interpreted
+    # signal, and repointed evidence at it.
+    4: ["evidence", "category_event_signals"],
+}
 
 _SCHEMA = """
 -- 1. CACHE -------------------------------------------------------------
@@ -66,29 +77,102 @@ CREATE TABLE IF NOT EXISTS events (
 );
 CREATE INDEX IF NOT EXISTS idx_events_date ON events (event_date);
 
--- One row per (category, event). Rewritten in place when a Phase 2 refresh
--- deepens what Phase 1 concluded, so the dashboard always reads current state
--- while `phase` records how that conclusion was reached.
-CREATE TABLE IF NOT EXISTS category_event_signals (
-    id                INTEGER PRIMARY KEY,
-    category          TEXT NOT NULL,
-    event_id          INTEGER NOT NULL REFERENCES events (id) ON DELETE CASCADE,
-    demand_lift       TEXT,             -- low | medium | high
-    confidence        TEXT,             -- low | medium | high
-    lead_time_days    INTEGER,          -- how early demand starts rising
-    reasoning_summary TEXT,
-    phase             TEXT NOT NULL,    -- bulk | event_refresh
-    created_at        TEXT NOT NULL,
-    updated_at        TEXT NOT NULL,
-    UNIQUE (category, event_id)
+-- One row per interpreted signal, whether it came from the calendar (Type A)
+-- or a trend feed (Type B). Both produce the same shape, which is the point:
+-- a festival and a viral aesthetic are different in origin but identical in
+-- what the seller needs from them - which occasions they lift, how much, and
+-- how long they have to react.
+--
+-- Deliberately NOT one row per (signal, product) or (signal, category). The
+-- match is computed at read time by intersecting `affected_occasions` with
+-- enriched_products.occasions, so re-enriching a catalog or re-interpreting a
+-- signal cannot leave a stale materialised cross-product behind.
+CREATE TABLE IF NOT EXISTS signals (
+    id                  INTEGER PRIMARY KEY,
+    signal_type         TEXT NOT NULL,    -- event | trend
+    name                TEXT NOT NULL,
+    source              TEXT,             -- calendarific | google_trends | ...
+    event_id            INTEGER REFERENCES events (id) ON DELETE CASCADE,
+    event_date          TEXT,             -- ISO date; NULL for undated trends
+    affected_occasions  TEXT,             -- JSON array - THE JOIN KEY
+    affected_categories TEXT,             -- JSON array, vocabulary tags
+    audience            TEXT,             -- women | men | unisex | kids | null
+    demand_lift         TEXT,             -- low | medium | high
+    confidence          TEXT,             -- low | medium | high
+    lead_time_days      INTEGER,          -- how early demand starts rising
+    reasoning           TEXT,
+    phase               TEXT NOT NULL,    -- bulk | refresh
+    relevant            INTEGER NOT NULL DEFAULT 1,  -- survived the relevance judgement
+    created_at          TEXT NOT NULL,
+    updated_at          TEXT NOT NULL,
+    UNIQUE (signal_type, name, event_date)
 );
-CREATE INDEX IF NOT EXISTS idx_signals_category ON category_event_signals (category);
-CREATE INDEX IF NOT EXISTS idx_signals_event    ON category_event_signals (event_id);
+CREATE INDEX IF NOT EXISTS idx_signals_type ON signals (signal_type);
+CREATE INDEX IF NOT EXISTS idx_signals_date ON signals (event_date);
+
+-- The seller's business context, derived once from their catalog and reused
+-- as grounding for every agent call. Without it the agent judges "does Diwali
+-- lift ethnic wear" in the abstract; with it, "does Diwali lift ethnic wear
+-- for THIS store". It also keeps prompts small - re-sending a whole catalog on
+-- every call wastes the same TPM budget llm_groq.py already had to tune around.
+--
+-- Computed columns (counts, price bands) come straight from the CSV and are
+-- always correct. Inferred columns (positioning, audience) come from the model
+-- and may be wrong, which is why `inference_source` records how each profile
+-- was produced.
+CREATE TABLE IF NOT EXISTS store_profile (
+    id                  INTEGER PRIMARY KEY,
+    catalog_fingerprint TEXT NOT NULL,   -- hash of the catalog; changes invalidate
+    product_count       INTEGER NOT NULL,
+    variant_count       INTEGER,
+    price_min           REAL,
+    price_median        REAL,
+    price_max           REAL,
+    top_categories      TEXT,            -- JSON array
+    product_types       TEXT,            -- JSON array
+    vendors             TEXT,            -- JSON array
+    store_type          TEXT,
+    target_audience     TEXT,
+    price_positioning   TEXT,
+    style_descriptors   TEXT,            -- JSON array
+    summary             TEXT,
+    inference_source    TEXT NOT NULL,   -- computed | computed+llm
+    created_at          TEXT NOT NULL,
+    updated_at          TEXT NOT NULL
+);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_profile_fingerprint
+    ON store_profile (catalog_fingerprint);
+
+-- Per-product enrichment. `occasions` is the column that matters: it is the
+-- join key against a signal's affected_occasions, and the reason a festival
+-- can reach a product at all. Category alone could never express that link -
+-- "Diwali" is not a kind of saree, but both are `festive`.
+--
+-- Scoped by catalog_fingerprint so a re-uploaded catalog enriches fresh
+-- instead of inheriting conclusions about products that may have changed.
+CREATE TABLE IF NOT EXISTS enriched_products (
+    id                  INTEGER PRIMARY KEY,
+    catalog_fingerprint TEXT NOT NULL,
+    product_id          TEXT NOT NULL,
+    title               TEXT,
+    categories          TEXT,            -- JSON array of vocabulary tags
+    occasions           TEXT,            -- JSON array, closed occasion set
+    materials           TEXT,            -- JSON array
+    audience            TEXT,            -- women | men | unisex | kids
+    style_descriptors   TEXT,            -- JSON array
+    price_tier          TEXT,            -- budget | mid | premium (computed)
+    source              TEXT NOT NULL,   -- rule_based | rule_based+llm
+    created_at          TEXT NOT NULL,
+    updated_at          TEXT NOT NULL,
+    UNIQUE (catalog_fingerprint, product_id)
+);
+CREATE INDEX IF NOT EXISTS idx_enriched_fingerprint
+    ON enriched_products (catalog_fingerprint);
 
 -- 3. PROVENANCE --------------------------------------------------------
 CREATE TABLE IF NOT EXISTS evidence (
     id           INTEGER PRIMARY KEY,
-    signal_id    INTEGER NOT NULL REFERENCES category_event_signals (id) ON DELETE CASCADE,
+    signal_id    INTEGER NOT NULL REFERENCES signals (id) ON DELETE CASCADE,
     kind         TEXT NOT NULL,         -- search_result | calendar_entry | model_output
     url          TEXT,
     title        TEXT,
@@ -116,11 +200,22 @@ def connect(db_path=None):
 
 
 def init_db(conn):
-    """Create tables if absent and stamp the schema version.
+    """Create tables if absent, applying any pending replacements first.
 
-    PRAGMA user_version is the migration hook: when the schema changes, bump
-    SCHEMA_VERSION and branch here on the stored value.
+    PRAGMA user_version is the migration hook. Tables listed in
+    _REPLACED_TABLES for a version newer than the stored one are dropped
+    before the schema is re-applied, because CREATE TABLE IF NOT EXISTS would
+    otherwise silently leave an old shape in place - the failure mode being a
+    table that looks fine until a query hits a column that is not there.
     """
+    current = schema_version(conn)
+
+    if current < SCHEMA_VERSION:
+        for version in sorted(_REPLACED_TABLES):
+            if current < version <= SCHEMA_VERSION:
+                for table in _REPLACED_TABLES[version]:
+                    conn.execute(f"DROP TABLE IF EXISTS {table}")
+
     conn.executescript(_SCHEMA)
     conn.execute(f"PRAGMA user_version = {SCHEMA_VERSION}")
     conn.commit()

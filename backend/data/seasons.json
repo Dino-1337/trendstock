@@ -1,0 +1,55 @@
+{
+  "version": "2026-09-13",
+  "note": "Recurring demand PERIODS, as opposed to the dated points Calendarific supplies. This file exists because a calendar API only knows discrete festivals, yet the biggest demand drivers in Indian retail are spans: wedding season runs November to February and moves more ethnic wear than any single festival. Without these, a bridal saree with 1.4 days of stock raises no warning because no dated event is tagged `wedding`. Dates are MM-DD and recur every year; a span whose end month is earlier than its start month wraps across the new year. Hand-curated deliberately - there is no free API for this, and the list is small and stable enough that curation beats inference.",
+  "seasons": [
+    {
+      "name": "Wedding season (North India)",
+      "start": "11-01",
+      "end": "02-28",
+      "regions": ["North India"],
+      "description": "The main Hindu wedding muhurat window. Drives bridal and wedding-guest wear, jewellery and gifting harder than any single festival."
+    },
+    {
+      "name": "Wedding season (South India)",
+      "start": "04-01",
+      "end": "06-30",
+      "regions": ["South India"],
+      "description": "Southern auspicious wedding window, distinct from the northern one. Silk sarees, temple jewellery."
+    },
+    {
+      "name": "Summer",
+      "start": "03-15",
+      "end": "06-15",
+      "regions": [],
+      "description": "Hot season. Shifts demand toward cottons, linens, light colours and away from silks and heavy work."
+    },
+    {
+      "name": "Monsoon",
+      "start": "06-15",
+      "end": "09-15",
+      "regions": [],
+      "description": "Rain season. Quick-dry and synthetic fabrics, waterproof footwear; suppresses demand for delicate and heavy garments."
+    },
+    {
+      "name": "Winter",
+      "start": "11-15",
+      "end": "02-15",
+      "regions": ["North India"],
+      "description": "Cold season in the north. Shawls, stoles, woollens, layering pieces."
+    },
+    {
+      "name": "Festive season",
+      "start": "08-15",
+      "end": "11-15",
+      "regions": [],
+      "description": "The long festive run from Onam through Navratri, Durga Puja and Dussehra to Diwali. The single largest retail window of the Indian year."
+    },
+    {
+      "name": "Back to school",
+      "start": "05-15",
+      "end": "07-15",
+      "regions": [],
+      "description": "School reopening across most Indian boards. Uniforms, bags, footwear, stationery."
+    }
+  ]
+}

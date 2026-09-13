@@ -9,10 +9,13 @@ import {
   X,
 } from 'lucide-react'
 import clsx from 'clsx'
+import { useNavigate } from 'react-router-dom'
 import PageHeader from '../components/layout/PageHeader'
+import AnalysisProgress from '../components/primitives/AnalysisProgress'
 import Card from '../components/primitives/Card'
 import ProductThumb from '../components/primitives/ProductThumb'
 import { useAppData } from '../context/AppDataContext'
+import useEnrichmentJob from '../hooks/useEnrichmentJob'
 import { previewCsv, uploadCsv } from '../lib/api'
 import { formatPrice } from '../lib/format'
 
@@ -31,11 +34,17 @@ const REQUIRED_COLUMNS = [
 // plainly how many are hidden.
 const PREVIEW_RENDER_CAP = 60
 
-// idle -> previewing -> preview -> importing -> success
+// idle -> previewing -> preview -> importing -> analysing -> success
 //                     -> preview-error
 //                                  -> import-error
+//
+// `analysing` is the stage added for enrichment. Importing a CSV is fast, but
+// reading every product with a model is minutes, so the two are separated:
+// the import is committed first (the catalog is real and browsable straight
+// away) and analysis then runs as a pollable background job.
 export default function Upload() {
   const { catalog } = useAppData()
+  const navigate = useNavigate()
   const [dragOver, setDragOver] = useState(false)
   const [file, setFile] = useState(null)
   const [stage, setStage] = useState('idle')
@@ -44,14 +53,22 @@ export default function Upload() {
   const [importResult, setImportResult] = useState(null) // {ok:true, products_loaded, variants, warnings}
   const inputRef = useRef(null)
 
+  const enrichment = useEnrichmentJob({
+    onComplete: () => {
+      setStage('success')
+      catalog.reload()
+    },
+  })
+
   const reset = useCallback(() => {
     setFile(null)
     setStage('idle')
     setPreview(null)
     setErrorResult(null)
     setImportResult(null)
+    enrichment.reset()
     if (inputRef.current) inputRef.current.value = ''
-  }, [])
+  }, [enrichment])
 
   const runPreview = useCallback(async (chosenFile) => {
     if (!chosenFile) return
@@ -82,10 +99,14 @@ export default function Upload() {
       const { data } = await uploadCsv(file)
       if (data?.ok) {
         setImportResult(data)
-        setStage('success')
         // A successful upload changes the real catalog size shown in the
         // Topbar and on the Catalog page — refetch so they don't go stale.
         catalog.reload()
+        // Roll straight into analysis. The seller has just handed over a new
+        // catalog; making them find and press a second button to make it
+        // useful is a step with no decision in it.
+        setStage('analysing')
+        enrichment.start()
       } else {
         setErrorResult(data)
         setStage('import-error')
@@ -94,7 +115,7 @@ export default function Upload() {
       setErrorResult({ error: err.message || 'Could not reach the server.', detail: [] })
       setStage('import-error')
     }
-  }, [file, catalog])
+  }, [file, catalog, enrichment])
 
   const onDrop = useCallback(
     (e) => {
@@ -359,6 +380,46 @@ export default function Upload() {
         </>
       )}
 
+      {stage === 'analysing' && (
+        <Card className="h-auto">
+          {enrichment.error ? (
+            <div className="flex items-start gap-3">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-pastel-yellow text-pastel-yellow-ink">
+                <AlertTriangle size={20} strokeWidth={2} />
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="text-base font-semibold text-ink">
+                  Your catalog was imported, but analysis did not finish
+                </p>
+                <p className="mt-1 text-sm text-muted">{enrichment.error}</p>
+                <p className="mt-1 text-sm text-muted">
+                  Your products are saved and browsable. You can run the analysis
+                  again from the Catalog page at any time.
+                </p>
+                <div className="mt-4 flex flex-wrap gap-2.5">
+                  <button
+                    type="button"
+                    onClick={() => enrichment.start()}
+                    className="rounded-pill bg-cta px-4 py-2 text-sm font-semibold text-white hover:opacity-90"
+                  >
+                    Try again
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => navigate('/catalog')}
+                    className="rounded-pill border border-hairline bg-card px-4 py-2 text-sm font-semibold text-ink hover:bg-cream"
+                  >
+                    Go to catalog
+                  </button>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <AnalysisProgress job={enrichment.job} />
+          )}
+        </Card>
+      )}
+
       {stage === 'success' && importResult && (
         <Card className="h-auto">
           <div className="flex items-start gap-3">
@@ -366,7 +427,23 @@ export default function Upload() {
               <CheckCircle2 size={20} strokeWidth={2} />
             </span>
             <div className="min-w-0 flex-1">
-              <p className="text-base font-semibold text-ink">Catalog imported successfully</p>
+              <p className="text-base font-semibold text-ink">Catalog imported and analysed</p>
+              {enrichment.job?.result?.store_type && (
+                <p className="mt-1 text-sm text-muted">
+                  Recognised as{' '}
+                  <span className="font-medium text-ink">
+                    {enrichment.job.result.store_type}
+                  </span>
+                  {typeof enrichment.job.result.with_occasions === 'number' && (
+                    <>
+                      {' '}
+                      · {enrichment.job.result.with_occasions} product
+                      {enrichment.job.result.with_occasions === 1 ? '' : 's'} matched to
+                      occasions
+                    </>
+                  )}
+                </p>
+              )}
               <div className="mt-3 grid grid-cols-2 gap-3 sm:max-w-sm">
                 <div className="rounded-chip bg-cream px-4 py-3">
                   <p className="text-xs text-muted">Products loaded</p>
@@ -395,13 +472,22 @@ export default function Upload() {
                   </ul>
                 </div>
               )}
-              <button
-                type="button"
-                onClick={reset}
-                className="mt-4 rounded-pill border border-hairline bg-card px-4 py-2 text-sm font-semibold text-ink hover:bg-cream"
-              >
-                Import another file
-              </button>
+              <div className="mt-4 flex flex-wrap gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => navigate('/catalog')}
+                  className="rounded-pill bg-cta px-4 py-2 text-sm font-semibold text-white hover:opacity-90"
+                >
+                  View catalog
+                </button>
+                <button
+                  type="button"
+                  onClick={reset}
+                  className="rounded-pill border border-hairline bg-card px-4 py-2 text-sm font-semibold text-ink hover:bg-cream"
+                >
+                  Import another file
+                </button>
+              </div>
             </div>
           </div>
         </Card>

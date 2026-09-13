@@ -11,7 +11,7 @@ anything at all. A trend seen for the first time is honestly reported as
 "new" with null momentum, exactly as the API contract requires.
 """
 
-from datetime import date as date_cls, datetime, timezone
+from datetime import datetime, timezone
 from statistics import median
 import json
 import re

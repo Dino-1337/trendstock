@@ -32,14 +32,14 @@ def preserve_real_catalog():
 def no_groq_network_calls(monkeypatch):
     """Tests must never make real network calls (project constraint - see
     docs/checklist-backend.md). Several endpoint-level tests exercise the
-    full tagging pipeline (app/tagging/tagger.py tries Groq before falling
-    back to the rule-based tagger), so without this, a cold disk cache would
-    make a real Groq API call during a normal test run.
+    real enrichment/interpretation pipeline (app/llm/client.py tries Groq
+    before falling back to rule-based/computed-only results), so without
+    this, a real GROQ_API_KEY in the environment would make a live API call
+    during a normal test run.
 
-    Forcing GROQ_API_KEY unset for every test - regardless of what's in the
-    real .env or already warmed into data/cache/tags/ - guarantees every test
-    runs the deterministic rule-based tagger. Tests that specifically need to
-    exercise the Groq code path (llm_groq validation/fallback/batching) mock
-    the HTTP call itself and set a fake key locally within that test.
+    Forcing GROQ_API_KEY unset for every test guarantees every test runs the
+    deterministic fallback path. Tests that specifically need to exercise the
+    Groq code path mock the HTTP call itself and set a fake key locally
+    within that test.
     """
     monkeypatch.delenv("GROQ_API_KEY", raising=False)

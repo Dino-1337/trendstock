@@ -6,7 +6,10 @@ import clsx from 'clsx'
 //   its own wrapper (the page body itself never scrolls sideways).
 // - Below `md` the table becomes a stack of card-rows (checklist requirement),
 //   each showing label/value pairs for every non-primary column.
-export default function DataTable({ columns, rows, rowKey, emptyState }) {
+// - `onRowClick(row)` is optional; when passed, every row (table row and
+//   mobile card alike) becomes a click target with a visible hover/focus
+//   state, for pages that drill into a per-row detail view.
+export default function DataTable({ columns, rows, rowKey, emptyState, onRowClick }) {
   if (!rows || rows.length === 0) {
     return <div className="flex h-full items-center justify-center">{emptyState}</div>
   }
@@ -34,7 +37,22 @@ export default function DataTable({ columns, rows, rowKey, emptyState }) {
           </thead>
           <tbody>
             {rows.map((row) => (
-              <tr key={rowKey(row)} className="border-b border-hairline last:border-0 hover:bg-cream/60">
+              <tr
+                key={rowKey(row)}
+                onClick={onRowClick ? () => onRowClick(row) : undefined}
+                tabIndex={onRowClick ? 0 : undefined}
+                onKeyDown={
+                  onRowClick
+                    ? (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') onRowClick(row)
+                      }
+                    : undefined
+                }
+                className={clsx(
+                  'border-b border-hairline last:border-0 hover:bg-cream/60',
+                  onRowClick && 'cursor-pointer focus:outline-none focus:bg-cream/80',
+                )}
+              >
                 {columns.map((col) => (
                   <td
                     key={col.key}
@@ -52,7 +70,16 @@ export default function DataTable({ columns, rows, rowKey, emptyState }) {
       {/* Mobile stacked cards */}
       <div className="flex h-full flex-col gap-3 overflow-y-auto md:hidden">
         {rows.map((row) => (
-          <div key={rowKey(row)} className="rounded-chip border border-hairline p-4">
+          <div
+            key={rowKey(row)}
+            onClick={onRowClick ? () => onRowClick(row) : undefined}
+            role={onRowClick ? 'button' : undefined}
+            tabIndex={onRowClick ? 0 : undefined}
+            className={clsx(
+              'rounded-chip border border-hairline p-4',
+              onRowClick && 'cursor-pointer active:bg-cream/60',
+            )}
+          >
             <div>{primaryCol.render(row)}</div>
             <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-3 text-sm">
               {restCols

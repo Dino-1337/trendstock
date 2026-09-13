@@ -1,0 +1,64 @@
+{
+  "version": "2026-09-13",
+  "note": "Curated synonyms mapping real-world (mostly Indian-market) product words onto existing Shopify taxonomy category names. Every `tag` MUST be an exact category name from categories.json - these add ways to FIND a category, never new tags. Two gaps are covered: (1) Indian garment vocabulary the Shopify taxonomy names differently or not at all ('saree' vs 'Saris', 'kurti', 'sherwani'); (2) common Devanagari spellings, since the regex tagger is otherwise ASCII-only and the IN trend feed is heavily non-Latin. Devanagari entries are a convenience floor only - the LLM tier is what genuinely reads non-Latin text.",
+  "synonyms": [
+    {"term": "saree", "tag": "Saris"},
+    {"term": "sarees", "tag": "Saris"},
+    {"term": "sari", "tag": "Saris"},
+    {"term": "साड़ी", "tag": "Saris"},
+    {"term": "শাড়ি", "tag": "Saris"},
+
+    {"term": "lehanga", "tag": "Lehengas"},
+    {"term": "ghagra", "tag": "Lehengas"},
+    {"term": "chaniya choli", "tag": "Lehengas"},
+    {"term": "लहंगा", "tag": "Lehengas"},
+
+    {"term": "kurti", "tag": "Kurtas & Kurta Sets"},
+    {"term": "kurtis", "tag": "Kurtas & Kurta Sets"},
+    {"term": "sherwani", "tag": "Kurtas & Kurta Sets"},
+    {"term": "pathani", "tag": "Kurtas & Kurta Sets"},
+    {"term": "कुर्ता", "tag": "Kurtas & Kurta Sets"},
+
+    {"term": "anarkali", "tag": "Salwar Kameez & Suit Sets"},
+    {"term": "churidar", "tag": "Salwar Kameez & Suit Sets"},
+    {"term": "patiala", "tag": "Salwar Kameez & Suit Sets"},
+    {"term": "sharara", "tag": "Salwar Kameez & Suit Sets"},
+    {"term": "palazzo suit", "tag": "Salwar Kameez & Suit Sets"},
+    {"term": "सलवार", "tag": "Salwar Kameez & Suit Sets"},
+
+    {"term": "odhni", "tag": "Dupattas"},
+    {"term": "chunni", "tag": "Dupattas"},
+    {"term": "दुपट्टा", "tag": "Dupattas"},
+
+    {"term": "stole", "tag": "Scarves & Shawls"},
+    {"term": "pashmina", "tag": "Scarves & Shawls"},
+    {"term": "shawl", "tag": "Scarves & Shawls"},
+
+    {"term": "pagdi", "tag": "Turbans"},
+    {"term": "safa", "tag": "Turbans"},
+
+    {"term": "mangalsutra", "tag": "Necklaces"},
+    {"term": "haar", "tag": "Necklaces"},
+    {"term": "choker", "tag": "Necklaces"},
+
+    {"term": "jhumka", "tag": "Earrings"},
+    {"term": "jhumki", "tag": "Earrings"},
+    {"term": "chandbali", "tag": "Earrings"},
+
+    {"term": "bangle", "tag": "Bracelets"},
+    {"term": "bangles", "tag": "Bracelets"},
+    {"term": "kada", "tag": "Bracelets"},
+    {"term": "chudi", "tag": "Bracelets"},
+
+    {"term": "payal", "tag": "Anklets"},
+    {"term": "ghungroo", "tag": "Anklets"},
+
+    {"term": "kolhapuri", "tag": "Sandals"},
+    {"term": "jutti", "tag": "Sandals"},
+    {"term": "mojari", "tag": "Sandals"},
+
+    {"term": "choli", "tag": "Blouses"},
+    {"term": "trainers", "tag": "Sneakers"},
+    {"term": "kicks", "tag": "Sneakers"}
+  ]
+}
